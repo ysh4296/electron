@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type Postit = {
     id: string
@@ -6,22 +6,38 @@ type Postit = {
     y: number
     w: number
     h: number
-    color: string
+    color?: string
     text: string
 }
 
 export function OverlayCanvas() {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
+    const [postits, setPostits] = useState<Postit[]>([])
 
-    // 기본 포스트잇 5개
-    const postits: Postit[] = [
-        { id: 'north', x: 1200, y: 40, w: 140, h: 80, color: '#fef08a', text: 'NORTH' },
-        { id: 'south', x: 1200, y: 1200, w: 140, h: 80, color: '#fef08a', text: 'SOUTH' },
-        { id: 'west', x: 200, y: 600, w: 140, h: 80, color: '#fef08a', text: 'WEST' },
-        { id: 'east', x: 2400, y: 600, w: 140, h: 80, color: '#fef08a', text: 'EAST' },
-        { id: 'center', x: 1200, y: 600, w: 140, h: 80, color: '#fef08a', text: 'CENTER' },
-    ]
+    const draw = () => {
+        const ctx = ctxRef.current
+        const canvas = canvasRef.current
+        if (!ctx || !canvas) return
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        postits.forEach((p) => {
+            ctx.fillStyle = p.color ?? ''
+            ctx.strokeStyle = '#abb33bff'
+            ctx.lineWidth = 2
+            ctx.beginPath()
+            ctx.roundRect(p.x, p.y, p.w, p.h, 10)
+            ctx.fill()
+            ctx.stroke()
+
+            ctx.fillStyle = '#347562ff'
+            ctx.font = 'bold 16px sans-serif'
+            ctx.textAlign = 'center'
+            ctx.textBaseline = 'middle'
+            ctx.fillText(p.text, p.x + p.w / 2, p.y + p.h / 2)
+        })
+    }
 
     useEffect(() => {
         const canvas = canvasRef.current
@@ -30,40 +46,32 @@ export function OverlayCanvas() {
         if (!ctx) return
         ctxRef.current = ctx
 
-        const resize = () => {
-            canvas.width = window.innerWidth
-            canvas.height = window.innerHeight
-            draw()
-        }
-        window.addEventListener('resize', resize)
-        resize()
+        const updateCanvasSize = () => {
+            const ratio = window.devicePixelRatio || 1
+            canvas.width = window.innerWidth * ratio
+            canvas.height = window.innerHeight * ratio
+            ctx.scale(ratio, ratio)
 
-        return () => window.removeEventListener('resize', resize)
+            // ✅ 캔버스 크기에 맞춰 포스트잇 배치 다시 계산
+            const W = window.innerWidth
+            const H = window.innerHeight
+            const size = { w: 140, h: 80, c: '#fef08a' }
+
+            setPostits([
+                { id: 'north', x: W / 2 - size.w / 2, y: 40, ...size, text: 'NORTH' },
+                { id: 'south', x: W / 2 - size.w / 2, y: H - size.h - 40, ...size, text: 'SOUTH' },
+                { id: 'west', x: 40, y: H / 2 - size.h / 2, ...size, text: 'WEST' },
+                { id: 'east', x: W - size.w - 40, y: H / 2 - size.h / 2, ...size, text: 'EAST' },
+                { id: 'center', x: W / 2 - size.w / 2, y: H / 2 - size.h / 2, ...size, text: 'CENTER' },
+            ])
+        }
+
+        window.addEventListener('resize', updateCanvasSize)
+        updateCanvasSize()
+
+        return () => window.removeEventListener('resize', updateCanvasSize)
     }, [])
 
-    const draw = () => {
-        const ctx = ctxRef.current
-        if (!ctx) return
-        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
-
-        postits.forEach((p) => {
-            ctx.fillStyle = p.color
-            ctx.strokeStyle = '#222'
-            ctx.lineWidth = 2
-            ctx.beginPath()
-            ctx.roundRect(p.x, p.y, p.w, p.h, 10)
-            ctx.fill()
-            ctx.stroke()
-
-            ctx.fillStyle = '#111'
-            ctx.font = 'bold 16px sans-serif'
-            ctx.textAlign = 'center'
-            ctx.textBaseline = 'middle'
-            ctx.fillText(p.text, p.x + p.w / 2, p.y + p.h / 2)
-        })
-    }
-
-    // 단순히 draw loop 돌리기 (나중에 drag나 편집 추가 가능)
     useEffect(() => {
         let animationId: number
         const loop = () => {
@@ -72,7 +80,7 @@ export function OverlayCanvas() {
         }
         loop()
         return () => cancelAnimationFrame(animationId)
-    }, [])
+    }, [postits])
 
     return (
         <canvas
@@ -80,7 +88,7 @@ export function OverlayCanvas() {
             className="fixed inset-0 z-[999]"
             style={{
                 pointerEvents: 'none',
-                backgroundColor: 'transparent' // ✅ 투명
+                backgroundColor: 'transparent'
             }}
         />
     )
