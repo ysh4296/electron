@@ -1,5 +1,7 @@
+import '@radix-ui/themes/styles.css'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion'
+import { OverlayCanvas } from './components/OverlayCanvas'
 
 type HoverRevealPanelProps = {
   height?: number
@@ -14,18 +16,18 @@ type HoverRevealPanelProps = {
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100">
-      <HoverRevealPanel height={280} followMouse hotspotHeight={48}>
-        <PanelContent />
-      </HoverRevealPanel>
-
-      <main className="mx-auto max-w-4xl px-6 pt-24 pb-48 space-y-6">
-        <h1 className="text-3xl font-semibold tracking-tight">Hover-Reveal Top Panel 데모</h1>
-        <p className="text-neutral-300">
-          최상단 <span className="font-medium text-white">48px</span> 핫존에 마우스를 올리면
-          설정창이 고정된 위치에서 내려온다.
-        </p>
-      </main>
+    <div className="min-h-screen">
+      <OverlayCanvas />
+      {/* <HoverRevealPanel height={280} followMouse hotspotHeight={48}>
+          <PanelContent />
+        </HoverRevealPanel> */}
+      {/* <main className="mx-auto max-w-4xl px-6 pt-24 pb-48 space-y-6">
+          <h1 className="text-3xl font-semibold tracking-tight">Hover-Reveal Top Panel 데모</h1>
+          <p className="text-neutral-300">
+            최상단 <span className="font-medium text-white">48px</span> 핫존에 마우스를 올리면
+            설정창이 고정된 위치에서 내려온다.
+          </p>
+        </main> */}
     </div>
   )
 }
@@ -177,14 +179,12 @@ function Toggle({ label, defaultChecked = false }: { label: string; defaultCheck
     >
       <span>{label}</span>
       <span
-        className={`inline-flex h-6 w-11 items-center rounded-full transition border ${
-          on ? 'bg-emerald-500/20 border-emerald-500' : 'bg-neutral-800 border-neutral-700'
-        }`}
+        className={`inline-flex h-6 w-11 items-center rounded-full transition border ${on ? 'bg-emerald-500/20 border-emerald-500' : 'bg-neutral-800 border-neutral-700'
+          }`}
       >
         <span
-          className={`h-5 w-5 rounded-full bg-white shadow transform transition ${
-            on ? 'translate-x-5' : 'translate-x-1'
-          }`}
+          className={`h-5 w-5 rounded-full bg-white shadow transform transition ${on ? 'translate-x-5' : 'translate-x-1'
+            }`}
         />
       </span>
     </button>

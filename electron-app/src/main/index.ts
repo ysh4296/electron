@@ -12,19 +12,19 @@ function createWindow(): void {
     // show: false,
     autoHideMenuBar: true,
     alwaysOnTop: true,
-    // transparent: true,
+    transparent: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
     },
     focusable: false,
-    // skipTaskbar: true
+    skipTaskbar: true
   })
 
   mainWindow.on('ready-to-show', () => {
-    // mainWindow.setIgnoreMouseEvents(true, { forward: true })
-    // mainWindow.setFullScreen(true)
+    mainWindow.setIgnoreMouseEvents(true, { forward: true })
+    mainWindow.setFullScreen(true)
     mainWindow.show()
   })
 
