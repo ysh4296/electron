@@ -1,10 +1,15 @@
 import { useMotionValue, useSpring, AnimatePresence, motion } from 'framer-motion';
 import { useRef, useEffect, useMemo } from 'react';
 
+export type GuideSize = 'small' | 'medium' | 'large';
+export type GuideColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue';
+
 declare global {
     interface Window {
-        electronAPI?: {
+        customAPI?: {
             onToggleSettings?: (cb: () => void) => void;
+            get: () => Promise<{ guideSize: GuideSize; guideColor: GuideColor }>
+            save: (settings: { guideSize: GuideSize; guideColor: GuideColor }) => void
         };
     }
 }
@@ -19,7 +24,7 @@ export default function SettingPanel({
 }: any) {
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const y = useMotionValue(0);
+    const y = useMotionValue(-height);
     const ySpring = useSpring(y, { stiffness: 260, damping: 30, mass: 0.8 });
 
     // 🔹 F1 신호 수신 (main → renderer)
@@ -33,16 +38,20 @@ export default function SettingPanel({
             });
         };
 
-        window.electronAPI?.onToggleSettings?.(handler);
+        window.customAPI?.onToggleSettings?.(handler);
         return () => {
             // cleanup: ipcRenderer listener 제거
-            const { electronAPI } = window;
-            const ipc = (electronAPI as any)?.ipcRenderer;
+            const { customAPI } = window;
+            const ipc = (customAPI as any)?.ipcRenderer;
             if (ipc?.removeListener) ipc.removeListener('toggle-settings', handler);
         };
     }, [height, y]);
 
     const shadowOpacity = useMemo(() => (open ? 0.6 : 0), [open]);
+
+    useEffect(() => {
+        y.set(0);
+    }, []);
 
     return (
         <>

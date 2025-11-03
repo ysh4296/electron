@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Theme, Box, Flex, Text, Card, RadioGroup, Kbd } from '@radix-ui/themes';
+import { useEffect, useState } from 'react';
+import { Box, Flex, Text, RadioGroup, Kbd } from '@radix-ui/themes';
 import * as Tooltip from '@radix-ui/react-tooltip';
+import { GuideColor, GuideSize } from './SettingPanel';
 
-type GuideSize = 'small' | 'medium' | 'large';
-type GuideColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue';
 
 export default function SettingContent() {
     const [guideSize, setGuideSize] = useState<GuideSize>(() => {
@@ -21,17 +20,26 @@ export default function SettingContent() {
         }
     });
 
+    // ✅ 앱 시작 시 저장된 설정 불러오기
     useEffect(() => {
-        try {
-            localStorage.setItem('guideSize', guideSize);
-        } catch { }
-    }, [guideSize]);
+        const load = async () => {
+            try {
+                const s = await window.customAPI?.get()
+                if (s) {
+                    setGuideSize(s.guideSize)
+                    setGuideColor(s.guideColor)
+                }
+            } catch (e) {
+                console.error('load settings error', e)
+            }
+        }
+        load()
+    }, [])
 
+    // ✅ 변경될 때마다 저장
     useEffect(() => {
-        try {
-            localStorage.setItem('guideColor', guideColor);
-        } catch { }
-    }, [guideColor]);
+        window.customAPI?.save({ guideSize, guideColor })
+    }, [guideSize, guideColor])
 
     const sizeMap: Record<GuideSize, number> = { small: 1, medium: 2, large: 4 };
     const colorHex: Record<GuideColor, string> = {
@@ -43,7 +51,13 @@ export default function SettingContent() {
     };
 
     return (
-        <Flex direction="column" width="fit-content" gap="5" p="4" style={{ backgroundColor: `rgba(200,200,200)` }}>
+        <Flex
+            direction="column"
+            width="fit-content"
+            gap="5"
+            p="4"
+            style={{ backgroundColor: `rgba(200,200,200)` }}
+        >
             {/* 단축키 안내 */}
             <Flex direction="column" gap="1">
                 <Text weight="bold" size="3">
@@ -62,9 +76,7 @@ export default function SettingContent() {
                 <Text weight="bold" size="3">
                     보조선 크기
                 </Text>
-                <Text color="gray" size="2" mb="2">
-                    Small / Medium / Large
-                </Text>
+
                 <RadioGroup.Root value={guideSize} onValueChange={(v) => setGuideSize(v as GuideSize)}>
                     <Flex gap="2">
                         {(['small', 'medium', 'large'] as GuideSize[]).map((s) => (
@@ -122,6 +134,6 @@ export default function SettingContent() {
                     </Flex>
                 </Tooltip.Provider>
             </Flex>
-        </Flex >
+        </Flex>
     );
 }

@@ -1,8 +1,17 @@
 import { app, shell, BrowserWindow, ipcMain, globalShortcut } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 
 let mainWindow: BrowserWindow | null = null;
+
+const settingsPath = join(app.getPath('userData'), 'settings.json');
+
+// 🔹 기본 설정
+const defaultSettings = {
+  guideSize: 'medium',
+  guideColor: 'yellow'
+};
 
 function createWindow(): void {
   // Create the browser window.
@@ -14,11 +23,10 @@ function createWindow(): void {
     autoHideMenuBar: true,
     alwaysOnTop: true,
     transparent: true,
-    // ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
-      contextIsolation: true,
+      contextIsolation: true
     },
     focusable: false,
     skipTaskbar: true
@@ -57,9 +65,6 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window);
   });
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'));
-
   ipcMain.on('app-quit', () => {
     // 안전하게 종료
     try {
@@ -81,11 +86,37 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 
+  // 🔹 설정 읽기
+  function loadSettings() {
+    try {
+      if (!existsSync(settingsPath)) return defaultSettings;
+      const data = JSON.parse(readFileSync(settingsPath, 'utf-8'));
+      return { ...defaultSettings, ...data };
+    } catch {
+      return defaultSettings;
+    }
+  }
+
+  // 🔹 설정 저장
+  function saveSettings(settings: any) {
+    try {
+      const dir = app.getPath('userData');
+      if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+      writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf-8');
+    } catch (e) {
+      console.error('[saveSettings error]', e);
+    }
+  }
+
+  // IPC 핸들러 등록
+  ipcMain.handle('get-setting-options', () => loadSettings());
+  ipcMain.on('save-setting-options', (_e, settings) => saveSettings(settings));
+
   ipcMain.on('set-clickable', (_event, isClickable) => {
-    if (!mainWindow) return
+    if (!mainWindow) return;
 
     // 기본적으로 클릭 통과 유지
-    mainWindow.setIgnoreMouseEvents(!isClickable)
+    mainWindow.setIgnoreMouseEvents(!isClickable);
   });
 
   // F1 키로 설정창 토글 신호를 렌더러로 보냄
@@ -95,19 +126,18 @@ app.whenReady().then(() => {
     }
   });
 
-
   // 🔹 ESC 키로 앱 종료
   globalShortcut.register('Escape', () => {
     try {
-      app.quit()
+      app.quit();
     } catch {
       try {
-        app.exit(0)
+        app.exit(0);
       } catch {
         /* ignore */
       }
     }
-  })
+  });
 
   app.on('will-quit', () => {
     globalShortcut.unregisterAll();

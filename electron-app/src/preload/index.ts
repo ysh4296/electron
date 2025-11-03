@@ -2,8 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
 
 // Custom APIs for renderer
-const api = {
-};
+const api = {};
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
@@ -12,9 +11,15 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI);
     contextBridge.exposeInMainWorld('api', api);
-    contextBridge.exposeInMainWorld('electronAPI', {
+    contextBridge.exposeInMainWorld('customAPI', {
       onToggleSettings: (callback: () => void) => {
         ipcRenderer.on('toggle-settings', callback);
+      },
+      get: async () => {
+        return await ipcRenderer.invoke('get-setting-options');
+      },
+      save: (settings: any) => {
+        ipcRenderer.send('save-setting-options', settings);
       }
     });
   } catch (error) {
