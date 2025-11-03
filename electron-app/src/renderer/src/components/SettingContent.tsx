@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Theme, Box, Flex, Text, Card, RadioGroup } from '@radix-ui/themes';
+import { Theme, Box, Flex, Text, Card, RadioGroup, Kbd } from '@radix-ui/themes';
 import * as Tooltip from '@radix-ui/react-tooltip';
 
 type GuideSize = 'small' | 'medium' | 'large';
@@ -43,20 +43,23 @@ export default function SettingContent() {
     };
 
     return (
-        <Flex direction="column" gap="5" p="4" style={{ backgroundColor: `rgba(200,200,200)` }}>
+        <Flex direction="column" width="fit-content" gap="5" p="4" style={{ backgroundColor: `rgba(200,200,200)` }}>
             {/* 단축키 안내 */}
-            <Box>
-                <Text weight="medium" size="3">
+            <Flex direction="column" gap="1">
+                <Text weight="bold" size="3">
                     키 안내
                 </Text>
                 <Text color="gray" size="2">
-                    Esc: 종료 (앱 종료 요청 전송) · F1: 오버레이 열기/닫기
+                    <Kbd>Esc</Kbd> 종료
                 </Text>
-            </Box>
+                <Text color="gray" size="2">
+                    <Kbd>F1</Kbd> 설정창 토글
+                </Text>
+            </Flex>
 
             {/* 보조선 크기 */}
-            <Box>
-                <Text weight="medium" size="3">
+            <Flex direction="column" gap="1">
+                <Text weight="bold" size="3">
                     보조선 크기
                 </Text>
                 <Text color="gray" size="2" mb="2">
@@ -73,15 +76,12 @@ export default function SettingContent() {
                         ))}
                     </Flex>
                 </RadioGroup.Root>
-            </Box>
+            </Flex>
 
             {/* 보조선 색상 */}
-            <Box>
-                <Text weight="medium" size="3">
+            <Flex direction="column" gap="1">
+                <Text weight="bold" size="3">
                     보조선 색상
-                </Text>
-                <Text color="gray" size="2" mb="2">
-                    빨강, 주황, 노랑(기본), 초록, 파랑
                 </Text>
 
                 <Tooltip.Provider delayDuration={200}>
@@ -121,33 +121,7 @@ export default function SettingContent() {
                         ))}
                     </Flex>
                 </Tooltip.Provider>
-            </Box>
-
-            {/* 미리보기 */}
-            <Box>
-                <Text weight="medium" size="3">
-                    미리보기
-                </Text>
-                <Card mt="2" style={{ backgroundColor: '#1e1e1e' }}>
-                    <Box
-                        position="relative"
-                        height="80px"
-                        style={{ borderRadius: 8, background: '#0a0a0a80' }}
-                    >
-                        <Box
-                            position="absolute"
-                            style={{
-                                left: 0,
-                                right: 0,
-                                top: '50%',
-                                transform: 'translateY(-50%)',
-                                height: `${sizeMap[guideSize]}px`,
-                                backgroundColor: colorHex[guideColor]
-                            }}
-                        />
-                    </Box>
-                </Card>
-            </Box>
-        </Flex>
+            </Flex>
+        </Flex >
     );
 }

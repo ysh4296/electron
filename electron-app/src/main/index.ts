@@ -19,13 +19,12 @@ function createWindow(): void {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
       contextIsolation: true,
-    }
-    // focusable: false,
-    // skipTaskbar: true
+    },
+    focusable: false,
+    skipTaskbar: true
   });
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow?.setIgnoreMouseEvents(true, { forward: true });
     mainWindow?.setFullScreen(true);
     mainWindow?.show();
   });
@@ -82,12 +81,33 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 
+  ipcMain.on('set-clickable', (_event, isClickable) => {
+    if (!mainWindow) return
+
+    // 기본적으로 클릭 통과 유지
+    mainWindow.setIgnoreMouseEvents(!isClickable)
+  });
+
   // F1 키로 설정창 토글 신호를 렌더러로 보냄
   globalShortcut.register('F1', () => {
     if (mainWindow) {
       mainWindow.webContents.send('toggle-settings');
     }
   });
+
+
+  // 🔹 ESC 키로 앱 종료
+  globalShortcut.register('Escape', () => {
+    try {
+      app.quit()
+    } catch {
+      try {
+        app.exit(0)
+      } catch {
+        /* ignore */
+      }
+    }
+  })
 
   app.on('will-quit', () => {
     globalShortcut.unregisterAll();

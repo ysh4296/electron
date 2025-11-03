@@ -1,5 +1,5 @@
 import { useMotionValue, useSpring, AnimatePresence, motion } from 'framer-motion';
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 
 declare global {
     interface Window {
@@ -10,16 +10,16 @@ declare global {
 }
 
 export default function SettingPanel({
+    open,
+    setOpen,
     height = 240,
-    hotspotHeight = 40,
     className = '',
     contentClassName = '',
     children
 }: any) {
-    const [open, setOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const y = useMotionValue(-height);
+    const y = useMotionValue(0);
     const ySpring = useSpring(y, { stiffness: 260, damping: 30, mass: 0.8 });
 
     // 🔹 F1 신호 수신 (main → renderer)
@@ -28,12 +28,12 @@ export default function SettingPanel({
             setOpen((prev) => {
                 const next = !prev;
                 y.set(next ? 0 : -height);
+                window.electron.ipcRenderer.send('set-clickable', next);
                 return next;
             });
         };
 
         window.electronAPI?.onToggleSettings?.(handler);
-
         return () => {
             // cleanup: ipcRenderer listener 제거
             const { electronAPI } = window;
@@ -41,19 +41,6 @@ export default function SettingPanel({
             if (ipc?.removeListener) ipc.removeListener('toggle-settings', handler);
         };
     }, [height, y]);
-
-    // 🔹 ESC 누르면 앱 종료 요청
-    useEffect(() => {
-        const onKey = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
-                e.preventDefault();
-                const anyWin = window as any;
-                anyWin?.electron?.ipcRenderer?.send?.('app-quit');
-            }
-        };
-        window.addEventListener('keydown', onKey);
-        return () => window.removeEventListener('keydown', onKey);
-    }, []);
 
     const shadowOpacity = useMemo(() => (open ? 0.6 : 0), [open]);
 
