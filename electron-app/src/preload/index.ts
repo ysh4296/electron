@@ -15,6 +15,9 @@ if (process.contextIsolated) {
       onToggleSettings: (callback: () => void) => {
         ipcRenderer.on('toggle-settings', callback);
       },
+      onToggleOverlay: (callback: () => void) => {
+        ipcRenderer.on('toggle-overlay', callback);
+      },
       get: async () => {
         return await ipcRenderer.invoke('get-setting-options');
       },

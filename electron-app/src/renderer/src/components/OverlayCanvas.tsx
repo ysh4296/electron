@@ -1,3 +1,4 @@
+import { GuideColor, GuideSize } from '@renderer/App';
 import { useEffect, useRef, useState } from 'react';
 
 type Postit = {
@@ -10,10 +11,48 @@ type Postit = {
     text: string;
 };
 
-export function OverlayCanvas({ focused }: { focused: boolean }) {
+const sizeMap: Record<GuideSize, { w: number; h: number }> = {
+    small: { w: 140, h: 80 },
+    medium: { w: 280, h: 160 },
+    large: { w: 420, h: 240 }
+};
+const colorMap: Record<GuideColor, string> = {
+    red: '#ef4444',
+    orange: '#f97316',
+    yellow: '#fbbf24',
+    green: '#22c55e',
+    blue: '#3b82f6'
+};
+
+export function OverlayCanvas({
+    focused,
+    guideSize,
+    guideColor
+}: {
+    focused: boolean;
+    guideSize: GuideSize;
+    guideColor: GuideColor;
+}) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
     const [postits, setPostits] = useState<Postit[]>([]);
+    const [overlayVisible, setOverlayVisible] = useState(true);
+
+    useEffect(() => {
+        window.customAPI?.onToggleOverlay?.(() => {
+            setOverlayVisible((prev) => !prev);
+        });
+
+        return () => {
+            // cleanup: ipcRenderer listener 제거
+            const { customAPI } = window;
+            const ipc = (customAPI as any)?.ipcRenderer;
+            if (ipc?.removeListener)
+                ipc.removeListener('toggle-overlay', () => {
+                    setOverlayVisible((prev) => !prev);
+                });
+        };
+    }, []);
 
     const draw = () => {
         const ctx = ctxRef.current;
@@ -28,12 +67,22 @@ export function OverlayCanvas({ focused }: { focused: boolean }) {
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
 
+        if (!overlayVisible) {
+            return;
+        }
+
         // 포스트잇 그리기
         postits.forEach((p) => {
             if (p.id == 'center') {
                 // ✅ CENTER 포스트잇은 원으로 그리기
                 ctx.beginPath();
-                ctx.arc(p.x + p.w / 2, p.y + p.h / 2, Math.min(p.w, p.h) / 2, 0, Math.PI * 2);
+                ctx.arc(
+                    p.x + p.w / 2,
+                    p.y + p.h / 2,
+                    Math.min(p.w, p.h) / 2,
+                    0,
+                    Math.PI * 2
+                );
                 ctx.fill();
                 ctx.stroke();
             } else {
@@ -70,10 +119,21 @@ export function OverlayCanvas({ focused }: { focused: boolean }) {
             // ✅ 캔버스 크기에 맞춰 포스트잇 배치 다시 계산
             const W = window.innerWidth;
             const H = window.innerHeight;
-            const size = { w: 140, h: 80, c: '#fef08a' };
+            const size = {
+                w: sizeMap[guideSize].w,
+                h: sizeMap[guideSize].h,
+                c: colorMap[guideColor]
+            };
 
             setPostits([
-                { id: 'north', x: W / 2 - size.w / 2, y: 0, ...size, text: 'NORTH', color: size.c },
+                {
+                    id: 'north',
+                    x: W / 2 - size.w / 2,
+                    y: 0,
+                    ...size,
+                    text: 'NORTH',
+                    color: size.c
+                },
                 {
                     id: 'south',
                     x: W / 2 - size.w / 2,
@@ -82,8 +142,22 @@ export function OverlayCanvas({ focused }: { focused: boolean }) {
                     text: 'SOUTH',
                     color: size.c
                 },
-                { id: 'west', x: 0, y: H / 2 - size.h / 2, ...size, text: 'WEST', color: size.c },
-                { id: 'east', x: W - size.w, y: H / 2 - size.h / 2, ...size, text: 'EAST', color: size.c },
+                {
+                    id: 'west',
+                    x: 0,
+                    y: H / 2 - size.h / 2,
+                    ...size,
+                    text: 'WEST',
+                    color: size.c
+                },
+                {
+                    id: 'east',
+                    x: W - size.w,
+                    y: H / 2 - size.h / 2,
+                    ...size,
+                    text: 'EAST',
+                    color: size.c
+                },
                 {
                     id: 'center',
                     x: W / 2 - size.w / 2,
@@ -99,7 +173,7 @@ export function OverlayCanvas({ focused }: { focused: boolean }) {
         updateCanvasSize();
 
         return () => window.removeEventListener('resize', updateCanvasSize);
-    }, []);
+    }, [guideSize, guideColor]);
 
     useEffect(() => {
         let animationId: number;
@@ -109,7 +183,7 @@ export function OverlayCanvas({ focused }: { focused: boolean }) {
         };
         loop();
         return () => cancelAnimationFrame(animationId);
-    }, [postits, focused]);
+    }, [postits, focused, overlayVisible, guideSize, guideColor]);
 
     return (
         <canvas
