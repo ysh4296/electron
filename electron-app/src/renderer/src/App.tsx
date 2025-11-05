@@ -3,6 +3,8 @@ import { OverlayCanvas } from './components/OverlayCanvas';
 import SettingPanel from './components/SettingPanel';
 import SettingContent from './components/SettingContent';
 import { useEffect, useState } from 'react';
+import i18n from './locales/i18n';
+import './locales/i18n';
 
 export type GuideSize = 'small' | 'medium' | 'large';
 export type GuideColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue';
@@ -13,12 +15,14 @@ declare global {
       onToggleSettings?: (cb: () => void) => void;
       onToggleOverlay?: (cb: () => void) => void;
       get: () => Promise<{
-        guideSize: GuideSize;
-        guideColor: GuideColor;
+        guideSize?: GuideSize;
+        guideColor?: GuideColor;
+        language?: string;
       }>;
       save: (settings: {
-        guideSize: GuideSize;
-        guideColor: GuideColor;
+        guideSize?: GuideSize;
+        guideColor?: GuideColor;
+        language?: string;
       }) => void;
     };
   }
@@ -34,6 +38,7 @@ export default function App() {
       return 'medium';
     }
   });
+
   const [guideColor, setGuideColor] = useState<GuideColor>(() => {
     try {
       return (localStorage.getItem('guideColor') as GuideColor) ?? 'yellow';
@@ -42,13 +47,23 @@ export default function App() {
     }
   });
 
+  const [language, setLanguage] = useState<string>(() => {
+    try {
+      return localStorage.getItem('language') ?? 'en';
+    } catch {
+      return 'en';
+    }
+  });
+
   useEffect(() => {
     const load = async () => {
       try {
         const s = await window.customAPI?.get();
         if (s) {
-          setGuideSize(s.guideSize);
-          setGuideColor(s.guideColor);
+          setGuideSize(s.guideSize ?? 'medium');
+          setGuideColor(s.guideColor ?? 'yellow');
+          setLanguage(s.language ?? 'en');
+          i18n.changeLanguage(s.language ?? 'en');
         }
       } catch (e) {
         console.error('load settings error', e);
