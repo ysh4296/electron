@@ -47,14 +47,6 @@ export default function App() {
     }
   });
 
-  // const [language, setLanguage] = useState<string>(() => {
-  //   try {
-  //     return localStorage.getItem('language') ?? 'en';
-  //   } catch {
-  //     return 'en';
-  //   }
-  // });
-
   useEffect(() => {
     const load = async () => {
       try {
@@ -62,7 +54,6 @@ export default function App() {
         if (s) {
           setGuideSize(s.guideSize ?? 'medium');
           setGuideColor(s.guideColor ?? 'yellow');
-          // setLanguage(s.language ?? 'en');
           i18n.changeLanguage(s.language ?? 'en');
         }
       } catch (e) {
