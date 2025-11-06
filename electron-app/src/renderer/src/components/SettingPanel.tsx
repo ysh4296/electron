@@ -9,25 +9,6 @@ import { useRef, useEffect, useMemo } from 'react';
 export type GuideSize = 'small' | 'medium' | 'large';
 export type GuideColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue';
 
-// declare global {
-//     interface Window {
-//         customAPI?: {
-//             onToggleSettings?: (cb: () => void) => void;
-//             onToggleOverlay?: (cb: () => void) => void;
-//             get: () => Promise<{
-//                 guideSize: GuideSize;
-//                 guideColor: GuideColor;
-//                 language: string;
-//             }>;
-//             save: (settings: {
-//                 guideSize: GuideSize;
-//                 guideColor: GuideColor;
-//                 language: string;
-//             }) => void;
-//         };
-//     }
-// }
-
 export default function SettingPanel({
   open,
   setOpen,
