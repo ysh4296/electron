@@ -4,9 +4,7 @@ import {
   Text,
   RadioGroup,
   Kbd,
-  DropdownMenu,
   Button,
-  Select
 } from '@radix-ui/themes';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { GuideColor, GuideSize } from '@renderer/App';
