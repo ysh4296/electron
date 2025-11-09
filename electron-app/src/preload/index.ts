@@ -18,10 +18,10 @@ if (process.contextIsolated) {
       onToggleOverlay: (callback: () => void) => {
         ipcRenderer.on('toggle-overlay', callback);
       },
-      get: async () => {
+      getOptions: async () => {
         return await ipcRenderer.invoke('get-setting-options');
       },
-      save: (settings: any) => {
+      saveOptions: (settings: any) => {
         ipcRenderer.send('save-setting-options', settings);
       }
     });

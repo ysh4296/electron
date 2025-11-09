@@ -1,30 +1,30 @@
 <!doctype html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Electron</title>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: transparent;
+        overflow: hidden;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Electron</title>
-  <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:" />
-  <style>
-    html,
-    body {
-      margin: 0;
-      background: transparent;
-      overflow: hidden;
-    }
+      canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+      }
+    </style>
+  </head>
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-    }
-  </style>
-</head>
-
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-</body>
-
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

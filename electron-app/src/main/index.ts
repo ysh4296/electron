@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain, globalShortcut } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+import { INPUT_CONSTANTS } from '../constants/input';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -120,21 +121,21 @@ app.whenReady().then(() => {
   });
 
   // F1 키로 설정창 토글 신호를 렌더러로 보냄
-  globalShortcut.register('F1', () => {
+  globalShortcut.register(INPUT_CONSTANTS.settingPopup, () => {
     if (mainWindow) {
       mainWindow.webContents.send('toggle-settings');
     }
   });
 
   // F1 키로 설정창 토글 신호를 렌더러로 보냄
-  globalShortcut.register('F2', () => {
+  globalShortcut.register(INPUT_CONSTANTS.toggleLayout, () => {
     if (mainWindow) {
       mainWindow.webContents.send('toggle-overlay');
     }
   });
 
   // 🔹 ESC 키로 앱 종료
-  globalShortcut.register('Escape', () => {
+  globalShortcut.register(INPUT_CONSTANTS.exit, () => {
     try {
       app.quit();
     } catch {

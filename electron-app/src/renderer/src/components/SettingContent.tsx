@@ -1,11 +1,4 @@
-import {
-  Box,
-  Flex,
-  Text,
-  RadioGroup,
-  Kbd,
-  Button,
-} from '@radix-ui/themes';
+import { Box, Flex, Text, RadioGroup, Kbd, Button } from '@radix-ui/themes';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { GuideColor, GuideSize } from '@renderer/App';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +13,19 @@ const colorHex: Record<GuideColor, string> = {
   blue: '#3b82f6'
 };
 
+const languages = [
+  { code: 'en', label: 'English' },
+  { code: 'ko', label: '한국어' },
+  { code: 'ja', label: '日本語' },
+  { code: 'zh', label: '中文' },
+  { code: 'es', label: 'Español' },
+  { code: 'fr', label: 'Français' },
+  { code: 'de', label: 'Deutsch' },
+  { code: 'it', label: 'Italiano' },
+  { code: 'ru', label: 'Русский' },
+  { code: 'pt', label: 'Português' }
+];
+
 export default function SettingContent({
   guideSize,
   setGuideSize,
@@ -28,19 +34,6 @@ export default function SettingContent({
 }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-
-  const languages = [
-    { code: 'en', label: 'English' },
-    { code: 'ko', label: '한국어' },
-    { code: 'ja', label: '日本語' },
-    { code: 'zh', label: '中文' },
-    { code: 'es', label: 'Español' },
-    { code: 'fr', label: 'Français' },
-    { code: 'de', label: 'Deutsch' },
-    { code: 'it', label: 'Italiano' },
-    { code: 'ru', label: 'Русский' },
-    { code: 'pt', label: 'Português' }
-  ];
 
   return (
     <Flex

@@ -13,29 +13,29 @@ import ru from './ru.json';
 import pt from './pt.json';
 
 i18n
-    .use(LanguageDetector)
-    .use(initReactI18next)
-    .init({
-        resources: {
-            en: { translation: en },
-            ko: { translation: ko },
-            ja: { translation: ja },
-            zh: { translation: zh },
-            es: { translation: es },
-            fr: { translation: fr },
-            de: { translation: de },
-            it: { translation: it },
-            ru: { translation: ru },
-            pt: { translation: pt }
-        },
-        lng: 'en',
-        fallbackLng: 'en',
-        interpolation: { escapeValue: false }
-    });
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources: {
+      en: { translation: en },
+      ko: { translation: ko },
+      ja: { translation: ja },
+      zh: { translation: zh },
+      es: { translation: es },
+      fr: { translation: fr },
+      de: { translation: de },
+      it: { translation: it },
+      ru: { translation: ru },
+      pt: { translation: pt }
+    },
+    lng: 'en',
+    fallbackLng: 'en',
+    interpolation: { escapeValue: false }
+  });
 
 // ✅ 언어 변경 콜백
 i18n.on('languageChanged', (lang) => {
-    window.customAPI?.save({ language: lang });
+  window.customAPI?.saveOptions({ language: lang });
 });
 
 export default i18n;

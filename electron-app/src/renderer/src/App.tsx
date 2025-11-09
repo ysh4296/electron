@@ -14,12 +14,12 @@ declare global {
     customAPI?: {
       onToggleSettings?: (cb: () => void) => void;
       onToggleOverlay?: (cb: () => void) => void;
-      get: () => Promise<{
+      getOptions: () => Promise<{
         guideSize?: GuideSize;
         guideColor?: GuideColor;
         language?: string;
       }>;
-      save: (settings: {
+      saveOptions: (settings: {
         guideSize?: GuideSize;
         guideColor?: GuideColor;
         language?: string;
@@ -50,7 +50,7 @@ export default function App() {
   useEffect(() => {
     const load = async () => {
       try {
-        const s = await window.customAPI?.get();
+        const s = await window.customAPI?.getOptions();
         if (s) {
           setGuideSize(s.guideSize ?? 'medium');
           setGuideColor(s.guideColor ?? 'yellow');
@@ -65,7 +65,7 @@ export default function App() {
 
   // ✅ 변경될 때마다 저장
   useEffect(() => {
-    window.customAPI?.save({
+    window.customAPI?.saveOptions({
       guideSize,
       guideColor
     });
