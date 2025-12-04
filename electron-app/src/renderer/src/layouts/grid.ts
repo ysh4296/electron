@@ -1,44 +1,54 @@
-export const grid = (screenWidth: number, screenHeight: number): Postit[] => {
-  return [
+import { LayoutFunction } from ".";
+
+export const grid: LayoutFunction = (screenWidth, screenHeight, guideSize) => {
+  const thirdW = screenWidth / 3;
+  const thirdH = screenHeight / 3;
+
+  const LINE_THICKNESS = {
+    small: 8,
+    medium: 16,
+    large: 24
+  };
+
+   return [
+    // 🔹 Vertical Line 1 (1/3 지점)
     {
-      id: 'center',
-      x: screenWidth / 2 - 120,
-      y: screenHeight / 2 - 120,
-      w: { small: 80, medium: 160, large: 240 },
-      h: { small: 80, medium: 160, large: 240 },
-      text: 'CENTER'
-    },
-    {
-      id: 'north',
-      x: screenWidth / 2 - 140,
+      id: "v-line-1",
+      x: thirdW - LINE_THICKNESS[guideSize] / 2, // 중앙 보정
       y: 0,
-      w: { small: 140, medium: 280, large: 420 },
-      h: { small: 80, medium: 160, large: 240 },
-      text: 'NORTH'
+      w: LINE_THICKNESS,
+      h: { small: screenHeight, medium: screenHeight, large: screenHeight },
+      text: ""
     },
+
+    // 🔹 Vertical Line 2 (2/3 지점)
     {
-      id: 'south',
-      x: screenWidth / 2 - 140,
-      y: screenHeight - 80,
-      w: { small: 140, medium: 280, large: 420 },
-      h: { small: 80, medium: 160, large: 240 },
-      text: 'SOUTH'
+      id: "v-line-2",
+      x: thirdW * 2 - LINE_THICKNESS[guideSize] / 2, // 중앙 보정
+      y: 0,
+      w: LINE_THICKNESS,
+      h: { small: screenHeight, medium: screenHeight, large: screenHeight },
+      text: ""
     },
+
+    // 🔹 Horizontal Line 1 (1/3 지점)
     {
-      id: 'west',
+      id: "h-line-1",
       x: 0,
-      y: screenHeight / 2 - 140,
-      w: { small: 140, medium: 280, large: 420 },
-      h: { small: 80, medium: 160, large: 240 },
-      text: 'WEST'
+      y: thirdH - LINE_THICKNESS[guideSize] / 2, // 중앙 보정
+      w: { small: screenWidth, medium: screenWidth, large: screenWidth },
+      h: LINE_THICKNESS,
+      text: ""
     },
+
+    // 🔹 Horizontal Line 2 (2/3 지점)
     {
-      id: 'east',
-      x: screenWidth - 140,
-      y: screenHeight / 2 - 140,
-      w: { small: 140, medium: 280, large: 420 },
-      h: { small: 80, medium: 160, large: 240 },
-      text: 'EAST'
+      id: "h-line-2",
+      x: 0,
+      y: thirdH * 2 - LINE_THICKNESS[guideSize] / 2, // 중앙 보정
+      w: { small: screenWidth, medium: screenWidth, large: screenWidth },
+      h: LINE_THICKNESS,
+      text: ""
     }
   ];
 };

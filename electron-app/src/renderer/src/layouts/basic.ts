@@ -1,4 +1,6 @@
-export const basic = (screenWidth: number, screenHeight: number): Postit[] => {
+import { LayoutFunction } from ".";
+
+export const basic : LayoutFunction = (screenWidth, screenHeight, guideSize) => {
   return [
     {
       id: 'center',
