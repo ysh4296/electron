@@ -1,4 +1,3 @@
-
 type Postit = {
   id: string;
   x: number;

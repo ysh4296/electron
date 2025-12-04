@@ -1,4 +1,12 @@
-import { Box, Flex, Text, RadioGroup, Kbd, Button } from '@radix-ui/themes';
+import {
+  Box,
+  Flex,
+  Text,
+  RadioGroup,
+  Kbd,
+  Button,
+  Slider
+} from '@radix-ui/themes';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { GuideColor, GuideSize } from '@renderer/App';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +38,9 @@ export default function SettingContent({
   guideSize,
   setGuideSize,
   guideColor,
-  setGuideColor
+  setGuideColor,
+  guideOpacity,
+  setGuideOpacity
 }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -69,7 +79,7 @@ export default function SettingContent({
                   boxShadow: '0 4px 8px rgba(0,0,0,0.15)',
                   zIndex: 9999
                 }}
-              >
+              > 
                 <Flex direction="column" gap="1">
                   {languages.map((lang) => (
                     <Box
@@ -97,13 +107,13 @@ export default function SettingContent({
           </Box>
         </Flex>
         <Text color="gray" size="2">
-          <Kbd>Esc</Kbd> {t('종료')}
+          <Kbd>F1</Kbd> {t('종료')}
         </Text>
         <Text color="gray" size="2">
-          <Kbd>F1</Kbd> {t('설정창 켜기/끄기')}
+          <Kbd>F2</Kbd> {t('설정창 켜기/끄기')}
         </Text>
         <Text color="gray" size="2">
-          <Kbd>F2</Kbd> {t('오버레이 켜기/끄기')}
+          <Kbd>F3</Kbd> {t('오버레이 켜기/끄기')}
         </Text>
       </Flex>
 
@@ -182,7 +192,27 @@ export default function SettingContent({
           </Flex>
         </Tooltip.Provider>
       </Flex>
+      {/* 보조선 투명도 */}
+      <Flex direction="column" gap="1" width="100%">
+        <Text weight="bold" size="3">
+          {t('보조선 투명도')}
+        </Text>
 
+        <Flex align="center" gap="3">
+          <Slider
+            value={[Math.round((guideOpacity ?? 1) * 100)]}
+            min={0}
+            max={100}
+            step={1}
+            onValueChange={(val) => {
+              const v = val[0] ?? 100;
+              setGuideOpacity(v / 100);
+            }}
+          />
+
+          <Text size="2" style={{minWidth:40}}>{Math.round((guideOpacity ?? 1) * 100)}%</Text>
+        </Flex>
+      </Flex>
       {/* 언어 변경 */}
       <Flex direction="column" gap="1"></Flex>
     </Flex>

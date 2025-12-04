@@ -1,5 +1,5 @@
 import { GuideColor, GuideSize } from '@renderer/App';
-import { basic } from '@renderer/layouts';
+import { layouts } from '@renderer/layouts';
 import { useEffect, useRef, useState } from 'react';
 
 const colorMap: Record<GuideColor, string> = {
@@ -13,11 +13,13 @@ const colorMap: Record<GuideColor, string> = {
 export function OverlayCanvas({
   focused,
   guideSize,
-  guideColor
+  guideColor,
+  guideOpacity
 }: {
   focused: boolean;
   guideSize: GuideSize;
   guideColor: GuideColor;
+  guideOpacity: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -57,33 +59,22 @@ export function OverlayCanvas({
       return;
     }
 
-    // 포스트잇 그리기
     postits.forEach((p) => {
-      // if (p.id == 'center') {
-      //   // ✅ CENTER 포스트잇은 원으로 그리기
-      //   ctx.beginPath();
-      //   ctx.arc(
-      //     p.x + p.w / 2,
-      //     p.y + p.h / 2,
-      //     Math.min(p.w, p.h) / 2,
-      //     0,
-      //     Math.PI * 2
-      //   );
-      //   ctx.fill();
-      //   ctx.stroke();
-      // } else { 
-        ctx.fillStyle = colorMap[guideColor] ?? '';
-        ctx.strokeStyle = colorMap[guideColor] ?? '';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.rect(p.x, p.y, p.w[guideSize], p.h[guideSize]);
-        ctx.fill();
-        ctx.stroke();
+      ctx.save();
+      ctx.fillStyle = colorMap[guideColor] ?? '';
+      ctx.strokeStyle = colorMap[guideColor] ?? '';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.rect(p.x, p.y, p.w[guideSize], p.h[guideSize]);
+      ctx.globalAlpha = guideOpacity ?? 1;
+      ctx.fill();
+      ctx.stroke();
 
-        ctx.fillStyle = colorMap[guideColor] ?? '';
-        ctx.font = 'bold 16px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+      ctx.fillStyle = colorMap[guideColor] ?? '';
+      ctx.font = 'bold 16px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.restore();
     });
   };
 
@@ -99,7 +90,7 @@ export function OverlayCanvas({
       canvas.width = window.innerWidth * ratio;
       canvas.height = window.innerHeight * ratio;
       ctx.scale(ratio, ratio);
-      setPostits(basic(window.innerWidth, window.innerHeight));
+      setPostits(layouts.basic(window.innerWidth, window.innerHeight));
     };
 
     window.addEventListener('resize', updateCanvasSize);
@@ -116,7 +107,7 @@ export function OverlayCanvas({
     };
     loop();
     return () => cancelAnimationFrame(animationId);
-  }, [postits, focused, overlayVisible, guideSize, guideColor]);
+  }, [postits, focused, overlayVisible, guideSize, guideColor, guideOpacity]);
 
   return (
     <canvas
