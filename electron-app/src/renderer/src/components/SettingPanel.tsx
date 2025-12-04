@@ -32,7 +32,7 @@ export default function SettingPanel({
       setOpen((prev) => {
         const next = !prev;
         y.set(next ? 0 : -height);
-        window.electron.ipcRenderer.send('set-clickable', next);
+        window.electron.ipcRenderer.send('set-clickable', false);
         return next;
       });
     };

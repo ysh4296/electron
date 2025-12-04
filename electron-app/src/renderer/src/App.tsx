@@ -17,11 +17,13 @@ declare global {
       getOptions: () => Promise<{
         guideSize?: GuideSize;
         guideColor?: GuideColor;
+        guideOpacity?: number;
         language?: string;
       }>;
       saveOptions: (settings: {
         guideSize?: GuideSize;
         guideColor?: GuideColor;
+        guideOpacity?: number;
         language?: string;
       }) => void;
     };
@@ -44,6 +46,14 @@ export default function App() {
       return (localStorage.getItem('guideColor') as GuideColor) ?? 'yellow';
     } catch {
       return 'yellow';
+    }
+  });
+
+  const [guideOpacity, setGuideOpacity] = useState<number>(() => {
+    try {
+      return Number(localStorage.getItem('guideOpacity')) || 0.5;
+    } catch {
+      return 0.5;
     }
   });
 
@@ -79,12 +89,15 @@ export default function App() {
           setGuideSize={setGuideSize}
           guideColor={guideColor}
           setGuideColor={setGuideColor}
+          guideOpacity={guideOpacity}
+          setGuideOpacity={setGuideOpacity}
         />
       </SettingPanel>
       <OverlayCanvas
         focused={focused}
         guideSize={guideSize}
         guideColor={guideColor}
+        guideOpacity={guideOpacity}
       />
     </div>
   );
