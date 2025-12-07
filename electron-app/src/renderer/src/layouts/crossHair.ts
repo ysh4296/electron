@@ -1,4 +1,4 @@
-import { LayoutFunction } from ".";
+import { LayoutFunction } from '.';
 
 export const crossHair: LayoutFunction = (
   screenWidth,
@@ -38,42 +38,42 @@ export const crossHair: LayoutFunction = (
 
     // 🔹 위쪽 vertical bar
     {
-      id: "cross-up",
+      id: 'cross-up',
       x: centerX - LINE / 2,
       y: centerY - GAP - CROSS_LEN,
       w: { small: LINE, medium: LINE, large: LINE },
       h: { small: CROSS_LEN, medium: CROSS_LEN, large: CROSS_LEN },
-      text: ""
+      text: ''
     },
 
     // 🔹 아래쪽 vertical bar
     {
-      id: "cross-down",
+      id: 'cross-down',
       x: centerX - LINE / 2,
       y: centerY + GAP,
       w: { small: LINE, medium: LINE, large: LINE },
       h: { small: CROSS_LEN, medium: CROSS_LEN, large: CROSS_LEN },
-      text: ""
+      text: ''
     },
 
     // 🔹 왼쪽 horizontal bar
     {
-      id: "cross-left",
+      id: 'cross-left',
       x: centerX - GAP - CROSS_LEN,
       y: centerY - LINE / 2,
       w: { small: CROSS_LEN, medium: CROSS_LEN, large: CROSS_LEN },
       h: { small: LINE, medium: LINE, large: LINE },
-      text: ""
+      text: ''
     },
 
     // 🔹 오른쪽 horizontal bar
     {
-      id: "cross-right",
+      id: 'cross-right',
       x: centerX + GAP,
       y: centerY - LINE / 2,
       w: { small: CROSS_LEN, medium: CROSS_LEN, large: CROSS_LEN },
       h: { small: LINE, medium: LINE, large: LINE },
-      text: ""
+      text: ''
     },
 
     // ======================
@@ -82,42 +82,42 @@ export const crossHair: LayoutFunction = (
 
     // 🔹 NORTH Grid bar
     {
-      id: "north-grid",
+      id: 'north-grid',
       x: centerX - LINE / 2,
-      y: centerY - GAP - CROSS_LEN - GRID_LEN - (GRID_LEN * 0.3),
+      y: centerY - GAP - CROSS_LEN - GRID_LEN - GRID_LEN * 0.3,
       w: { small: LINE, medium: LINE, large: LINE },
       h: { small: GRID_LEN, medium: GRID_LEN, large: GRID_LEN },
-      text: ""
+      text: ''
     },
 
     // 🔹 SOUTH Grid bar
     {
-      id: "south-grid",
+      id: 'south-grid',
       x: centerX - LINE / 2,
-      y: centerY + GAP + CROSS_LEN + (GRID_LEN * 0.3),
+      y: centerY + GAP + CROSS_LEN + GRID_LEN * 0.3,
       w: { small: LINE, medium: LINE, large: LINE },
       h: { small: GRID_LEN, medium: GRID_LEN, large: GRID_LEN },
-      text: ""
+      text: ''
     },
 
     // 🔹 WEST Grid bar
     {
-      id: "west-grid",
-      x: centerX - GAP - CROSS_LEN - GRID_LEN - (GRID_LEN * 0.3),
+      id: 'west-grid',
+      x: centerX - GAP - CROSS_LEN - GRID_LEN - GRID_LEN * 0.3,
       y: centerY - LINE / 2,
       w: { small: GRID_LEN, medium: GRID_LEN, large: GRID_LEN },
       h: { small: LINE, medium: LINE, large: LINE },
-      text: ""
+      text: ''
     },
 
     // 🔹 EAST Grid bar
     {
-      id: "east-grid",
-      x: centerX + GAP + CROSS_LEN + (GRID_LEN * 0.3),
+      id: 'east-grid',
+      x: centerX + GAP + CROSS_LEN + GRID_LEN * 0.3,
       y: centerY - LINE / 2,
       w: { small: GRID_LEN, medium: GRID_LEN, large: GRID_LEN },
       h: { small: LINE, medium: LINE, large: LINE },
-      text: ""
+      text: ''
     }
   ];
 };

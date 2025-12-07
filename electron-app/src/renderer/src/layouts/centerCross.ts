@@ -1,4 +1,4 @@
-import { LayoutFunction } from ".";
+import { LayoutFunction } from '.';
 
 export const centerCross: LayoutFunction = (
   screenWidth,
@@ -23,7 +23,7 @@ export const centerCross: LayoutFunction = (
   }[guideSize];
 
   // Crosshair 크기
-  const CROSS_SIZE = screenHeight * 0.10 * SIZE_SCALE;
+  const CROSS_SIZE = screenHeight * 0.1 * SIZE_SCALE;
 
   // Tick 길이
   const TICK_SIZE = screenHeight * 0.06 * SIZE_SCALE;
@@ -38,42 +38,58 @@ export const centerCross: LayoutFunction = (
 
     // 위쪽 vertical
     {
-      id: "cross-vertical-top",
+      id: 'cross-vertical-top',
       x: centerX - LINE_THICKNESS / 2,
       y: centerY - CROSS_SIZE - CENTER_GAP,
-      w: { small: LINE_THICKNESS, medium: LINE_THICKNESS, large: LINE_THICKNESS },
+      w: {
+        small: LINE_THICKNESS,
+        medium: LINE_THICKNESS,
+        large: LINE_THICKNESS
+      },
       h: { small: CROSS_SIZE, medium: CROSS_SIZE, large: CROSS_SIZE },
-      text: ""
+      text: ''
     },
 
     // 아래쪽 vertical
     {
-      id: "cross-vertical-bottom",
+      id: 'cross-vertical-bottom',
       x: centerX - LINE_THICKNESS / 2,
       y: centerY + CENTER_GAP,
-      w: { small: LINE_THICKNESS, medium: LINE_THICKNESS, large: LINE_THICKNESS },
+      w: {
+        small: LINE_THICKNESS,
+        medium: LINE_THICKNESS,
+        large: LINE_THICKNESS
+      },
       h: { small: CROSS_SIZE, medium: CROSS_SIZE, large: CROSS_SIZE },
-      text: ""
+      text: ''
     },
 
     // 왼쪽 horizontal
     {
-      id: "cross-horizontal-left",
+      id: 'cross-horizontal-left',
       x: centerX - CROSS_SIZE - CENTER_GAP,
       y: centerY - LINE_THICKNESS / 2,
       w: { small: CROSS_SIZE, medium: CROSS_SIZE, large: CROSS_SIZE },
-      h: { small: LINE_THICKNESS, medium: LINE_THICKNESS, large: LINE_THICKNESS },
-      text: ""
+      h: {
+        small: LINE_THICKNESS,
+        medium: LINE_THICKNESS,
+        large: LINE_THICKNESS
+      },
+      text: ''
     },
 
     // 오른쪽 horizontal
     {
-      id: "cross-horizontal-right",
+      id: 'cross-horizontal-right',
       x: centerX + CENTER_GAP,
       y: centerY - LINE_THICKNESS / 2,
       w: { small: CROSS_SIZE, medium: CROSS_SIZE, large: CROSS_SIZE },
-      h: { small: LINE_THICKNESS, medium: LINE_THICKNESS, large: LINE_THICKNESS },
-      text: ""
+      h: {
+        small: LINE_THICKNESS,
+        medium: LINE_THICKNESS,
+        large: LINE_THICKNESS
+      },
+      text: ''
     },
 
     // ======================
@@ -82,42 +98,58 @@ export const centerCross: LayoutFunction = (
 
     // NORTH Tick
     {
-      id: "north-tick",
+      id: 'north-tick',
       x: centerX - LINE_THICKNESS / 2,
       y: centerY - CROSS_SIZE - CENTER_GAP - TICK_SIZE - CENTER_GAP,
-      w: { small: LINE_THICKNESS, medium: LINE_THICKNESS, large: LINE_THICKNESS },
+      w: {
+        small: LINE_THICKNESS,
+        medium: LINE_THICKNESS,
+        large: LINE_THICKNESS
+      },
       h: { small: TICK_SIZE, medium: TICK_SIZE, large: TICK_SIZE },
-      text: ""
+      text: ''
     },
 
     // SOUTH Tick
     {
-      id: "south-tick",
+      id: 'south-tick',
       x: centerX - LINE_THICKNESS / 2,
       y: centerY + CROSS_SIZE + CENTER_GAP + CENTER_GAP,
-      w: { small: LINE_THICKNESS, medium: LINE_THICKNESS, large: LINE_THICKNESS },
+      w: {
+        small: LINE_THICKNESS,
+        medium: LINE_THICKNESS,
+        large: LINE_THICKNESS
+      },
       h: { small: TICK_SIZE, medium: TICK_SIZE, large: TICK_SIZE },
-      text: ""
+      text: ''
     },
 
     // WEST Tick
     {
-      id: "west-tick",
+      id: 'west-tick',
       x: centerX - CROSS_SIZE - CENTER_GAP - TICK_SIZE - CENTER_GAP,
       y: centerY - LINE_THICKNESS / 2,
       w: { small: TICK_SIZE, medium: TICK_SIZE, large: TICK_SIZE },
-      h: { small: LINE_THICKNESS, medium: LINE_THICKNESS, large: LINE_THICKNESS },
-      text: ""
+      h: {
+        small: LINE_THICKNESS,
+        medium: LINE_THICKNESS,
+        large: LINE_THICKNESS
+      },
+      text: ''
     },
 
     // EAST Tick
     {
-      id: "east-tick",
+      id: 'east-tick',
       x: centerX + CROSS_SIZE + CENTER_GAP + CENTER_GAP,
       y: centerY - LINE_THICKNESS / 2,
       w: { small: TICK_SIZE, medium: TICK_SIZE, large: TICK_SIZE },
-      h: { small: LINE_THICKNESS, medium: LINE_THICKNESS, large: LINE_THICKNESS },
-      text: ""
+      h: {
+        small: LINE_THICKNESS,
+        medium: LINE_THICKNESS,
+        large: LINE_THICKNESS
+      },
+      text: ''
     }
   ];
 };

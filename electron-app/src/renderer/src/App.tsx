@@ -8,6 +8,7 @@ import './locales/i18n';
 
 export type GuideSize = 'small' | 'medium' | 'large';
 export type GuideColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue';
+export type GuideType = 'crossHair' | 'cross' | 'grid' | 'basic';
 
 declare global {
   interface Window {
@@ -18,12 +19,14 @@ declare global {
         guideSize?: GuideSize;
         guideColor?: GuideColor;
         guideOpacity?: number;
+        guideType?: string;
         language?: string;
       }>;
       saveOptions: (settings: {
         guideSize?: GuideSize;
         guideColor?: GuideColor;
         guideOpacity?: number;
+        guideType?: string;
         language?: string;
       }) => void;
     };
@@ -51,9 +54,17 @@ export default function App() {
 
   const [guideOpacity, setGuideOpacity] = useState<number>(() => {
     try {
-      return Number(localStorage.getItem('guideOpacity')) || 0.5;
+      return Number(localStorage.getItem('guideOpacity')) || 1;
     } catch {
-      return 0.5;
+      return 1;
+    }
+  });
+
+  const [guideType, setGuideType] = useState<string>(() => {
+    try {
+      return localStorage.getItem('guideType') || 'crossHair';
+    } catch {
+      return 'crossHair';
     }
   });
 
@@ -64,6 +75,8 @@ export default function App() {
         if (s) {
           setGuideSize(s.guideSize ?? 'medium');
           setGuideColor(s.guideColor ?? 'yellow');
+          setGuideOpacity(s.guideOpacity ?? 1);
+          setGuideType(s.guideType ?? 'crossHair');
           i18n.changeLanguage(s.language ?? 'en');
         }
       } catch (e) {
@@ -77,9 +90,10 @@ export default function App() {
   useEffect(() => {
     window.customAPI?.saveOptions({
       guideSize,
-      guideColor
+      guideColor,
+      guideOpacity
     });
-  }, [guideSize, guideColor]);
+  }, [guideSize, guideColor, guideOpacity]);
 
   return (
     <div className="min-h-screen min-w-screen">
@@ -91,6 +105,8 @@ export default function App() {
           setGuideColor={setGuideColor}
           guideOpacity={guideOpacity}
           setGuideOpacity={setGuideOpacity}
+          guideType={guideType}
+          setGuideType={setGuideType}
         />
       </SettingPanel>
       <OverlayCanvas

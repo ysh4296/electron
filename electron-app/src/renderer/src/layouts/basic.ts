@@ -1,6 +1,10 @@
-import { LayoutFunction } from ".";
+import { LayoutFunction } from '.';
 
-export const basic : LayoutFunction = (screenWidth, screenHeight, guideSize) => {
+export const basic: LayoutFunction = (
+  screenWidth,
+  screenHeight,
+  _guideSize
+) => {
   return [
     {
       id: 'center',

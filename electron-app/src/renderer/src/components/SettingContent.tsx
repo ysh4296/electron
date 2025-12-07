@@ -5,7 +5,8 @@ import {
   RadioGroup,
   Kbd,
   Button,
-  Slider
+  Slider,
+  Select
 } from '@radix-ui/themes';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { GuideColor, GuideSize } from '@renderer/App';
@@ -40,10 +41,13 @@ export default function SettingContent({
   guideColor,
   setGuideColor,
   guideOpacity,
-  setGuideOpacity
+  setGuideOpacity,
+  guideType,
+  setGuideType
 }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const [typeOpen, setTypeOpen] = useState(false);
 
   return (
     <Flex
@@ -79,7 +83,7 @@ export default function SettingContent({
                   boxShadow: '0 4px 8px rgba(0,0,0,0.15)',
                   zIndex: 9999
                 }}
-              > 
+              >
                 <Flex direction="column" gap="1">
                   {languages.map((lang) => (
                     <Box
@@ -115,6 +119,70 @@ export default function SettingContent({
         <Text color="gray" size="2">
           <Kbd>F3</Kbd> {t('오버레이 켜기/끄기')}
         </Text>
+      </Flex>
+
+      {/* 보조선 종류 (드롭다운) */}
+      <Flex direction="column" gap="1" width="100%">
+        <Text weight="bold" size="3">
+          {t('보조선 종류')}
+        </Text>
+
+        <Box style={{ position: 'relative', width: 'fit-content' }}>
+          <Button
+            variant="soft"
+            size="2"
+            onClick={() => setTypeOpen(!typeOpen)}
+          >
+            <Text style={{ textTransform: 'capitalize' }}>{guideType}</Text>
+            <Text ml="2" size="2">
+              {typeOpen ? '▲' : '▼'}
+            </Text>
+          </Button>
+
+          {typeOpen && (
+            <Box
+              style={{
+                position: 'absolute',
+                top: 'calc(100% + 6px)',
+                left: 0,
+                background: 'rgba(240,240,240,0.95)',
+                borderRadius: 6,
+                padding: 6,
+                boxShadow: '0 4px 8px rgba(0,0,0,0.15)',
+                zIndex: 9999,
+                minWidth: 140
+              }}
+            >
+              <Flex direction="column" gap="1">
+                {[
+                  { code: 'basic', label: 'Basic' },
+                  { code: 'crosshair', label: 'Crosshair' },
+                  { code: 'grid', label: 'Grid' },
+                  { code: 'postit', label: 'Postit' }
+                ].map((item) => (
+                  <Box
+                    key={item.code}
+                    onClick={() => {
+                      setGuideType(item.code);
+                      setTypeOpen(false);
+                    }}
+                    style={{
+                      cursor: 'pointer',
+                      padding: '6px 10px',
+                      borderRadius: 4,
+                      backgroundColor:
+                        guideType === item.code
+                          ? 'rgba(100,100,100,0.1)'
+                          : 'transparent'
+                    }}
+                  >
+                    <Text size="2">{item.label}</Text>
+                  </Box>
+                ))}
+              </Flex>
+            </Box>
+          )}
+        </Box>
       </Flex>
 
       {/* 보조선 크기 */}
@@ -210,7 +278,9 @@ export default function SettingContent({
             }}
           />
 
-          <Text size="2" style={{minWidth:40}}>{Math.round((guideOpacity ?? 1) * 100)}%</Text>
+          <Text size="2" style={{ minWidth: 40 }}>
+            {Math.round((guideOpacity ?? 1) * 100)}%
+          </Text>
         </Flex>
       </Flex>
       {/* 언어 변경 */}

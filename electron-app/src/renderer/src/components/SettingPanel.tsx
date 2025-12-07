@@ -26,7 +26,7 @@ export default function SettingPanel({
     mass: 0.8
   });
 
-  // 🔹 F1 신호 수신 (main → renderer)
+  // 🔹 세팅창 토글 신호 수신 (main → renderer)
   useEffect(() => {
     const handler = () => {
       setOpen((prev) => {

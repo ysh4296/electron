@@ -90,7 +90,9 @@ export function OverlayCanvas({
       canvas.width = window.innerWidth * ratio;
       canvas.height = window.innerHeight * ratio;
       ctx.scale(ratio, ratio);
-      setPostits(layouts.centerCross(window.innerWidth, window.innerHeight,guideSize));
+      setPostits(
+        layouts.crossHair(window.innerWidth, window.innerHeight, guideSize)
+      );
     };
 
     window.addEventListener('resize', updateCanvasSize);
