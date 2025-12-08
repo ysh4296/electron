@@ -14,12 +14,14 @@ export function OverlayCanvas({
   focused,
   guideSize,
   guideColor,
-  guideOpacity
+  guideOpacity,
+  guideType
 }: {
   focused: boolean;
   guideSize: GuideSize;
   guideColor: GuideColor;
   guideOpacity: number;
+  guideType: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -91,7 +93,7 @@ export function OverlayCanvas({
       canvas.height = window.innerHeight * ratio;
       ctx.scale(ratio, ratio);
       setPostits(
-        layouts.crossHair(window.innerWidth, window.innerHeight, guideSize)
+        layouts[guideType](window.innerWidth, window.innerHeight, guideSize)
       );
     };
 
@@ -99,7 +101,7 @@ export function OverlayCanvas({
     updateCanvasSize();
 
     return () => window.removeEventListener('resize', updateCanvasSize);
-  }, [guideSize, guideColor]);
+  }, [guideSize, guideColor, guideOpacity, guideType]);
 
   useEffect(() => {
     let animationId: number;
@@ -109,7 +111,15 @@ export function OverlayCanvas({
     };
     loop();
     return () => cancelAnimationFrame(animationId);
-  }, [postits, focused, overlayVisible, guideSize, guideColor, guideOpacity]);
+  }, [
+    postits,
+    focused,
+    overlayVisible,
+    guideSize,
+    guideColor,
+    guideOpacity,
+    guideType
+  ]);
 
   return (
     <canvas

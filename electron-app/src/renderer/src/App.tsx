@@ -114,6 +114,7 @@ export default function App() {
         guideSize={guideSize}
         guideColor={guideColor}
         guideOpacity={guideOpacity}
+        guideType={guideType}
       />
     </div>
   );

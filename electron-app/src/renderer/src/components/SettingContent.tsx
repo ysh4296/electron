@@ -156,9 +156,9 @@ export default function SettingContent({
               <Flex direction="column" gap="1">
                 {[
                   { code: 'basic', label: 'Basic' },
-                  { code: 'crosshair', label: 'Crosshair' },
-                  { code: 'grid', label: 'Grid' },
-                  { code: 'postit', label: 'Postit' }
+                  { code: 'crossHair', label: 'Crosshair' },
+                  { code: 'cross', label: 'Cross' },
+                  { code: 'grid', label: 'Grid' }
                 ].map((item) => (
                   <Box
                     key={item.code}
