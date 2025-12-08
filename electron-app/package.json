@@ -23,7 +23,7 @@
   },
   "build": {
     "appId": "com.example.electronapp",
-    "productName": "electron-app",
+    "productName": "dizzy-shield",
     "directories": {
       "output": "c:/dist"
     },
@@ -35,7 +35,7 @@
       "target": [
         "nsis"
       ],
-      "icon": "resources/icon.ico"
+      "icon": "resources/dizzy-shield.ico"
     },
     "nsis": {
       "oneClick": false,
