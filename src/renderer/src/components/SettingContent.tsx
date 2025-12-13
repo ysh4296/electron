@@ -157,7 +157,11 @@ export default function SettingContent({
                   { code: 'basic', label: 'Basic' },
                   { code: 'crossHair', label: 'Crosshair' },
                   { code: 'cross', label: 'Cross' },
-                  { code: 'grid', label: 'Grid' }
+                  { code: 'grid', label: 'Grid' },
+                  { code: 'hexRing', label: 'Hex Ring' },
+                  { code: 'perimeterFrame', label: 'Frame' },
+                  { code: 'tripleHorizon', label: 'Triple Horizon' },
+                  { code: 'columnFocus', label: 'Columns' }
                 ].map((item) => (
                   <Box
                     key={item.code}

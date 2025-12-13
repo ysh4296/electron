@@ -6,12 +6,11 @@ export const cross: LayoutFunction = (screenWidth, screenHeight, guideSize) => {
 
   const LINE_THICKNESS = {
     small: 3,
-    medium: 5,
-    large: 7 // 홀수!
+    medium: 9,
+    large: 18
   };
 
   return [
-    // 세로선
     {
       id: 'cross-vertical',
       x: centerX - LINE_THICKNESS[guideSize] / 2,
@@ -20,7 +19,6 @@ export const cross: LayoutFunction = (screenWidth, screenHeight, guideSize) => {
       h: { small: screenHeight, medium: screenHeight, large: screenHeight },
       text: ''
     },
-    // 가로선
     {
       id: 'cross-horizontal',
       x: 0,

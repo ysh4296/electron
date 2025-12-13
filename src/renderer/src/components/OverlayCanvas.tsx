@@ -92,9 +92,9 @@ export function OverlayCanvas({
       canvas.width = window.innerWidth * ratio;
       canvas.height = window.innerHeight * ratio;
       ctx.scale(ratio, ratio);
-      setPostits(
-        layouts[guideType](window.innerWidth, window.innerHeight, guideSize)
-      );
+      const layoutFn =
+        layouts[guideType as keyof typeof layouts] ?? layouts.crossHair;
+      setPostits(layoutFn(window.innerWidth, window.innerHeight, guideSize));
     };
 
     window.addEventListener('resize', updateCanvasSize);

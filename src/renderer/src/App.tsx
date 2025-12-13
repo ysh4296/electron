@@ -8,7 +8,15 @@ import './locales/i18n';
 
 export type GuideSize = 'small' | 'medium' | 'large';
 export type GuideColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue';
-export type GuideType = 'crossHair' | 'cross' | 'grid' | 'basic';
+export type GuideType =
+  | 'crossHair'
+  | 'cross'
+  | 'grid'
+  | 'basic'
+  | 'hexRing'
+  | 'perimeterFrame'
+  | 'tripleHorizon'
+  | 'columnFocus';
 
 declare global {
   interface Window {

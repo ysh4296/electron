@@ -10,16 +10,16 @@ export const crossHair: LayoutFunction = (
 
   // guideSize 비율
   const SIZE_SCALE = {
-    small: 1,
-    medium: 1.4,
-    large: 1.9
+    small: 0.9,
+    medium: 1.6,
+    large: 2.6
   }[guideSize];
 
   // 선 두께 (홀수)
   const LINE = {
     small: 3,
-    medium: 5,
-    large: 7
+    medium: 8,
+    large: 16
   }[guideSize];
 
   // 십자선 길이

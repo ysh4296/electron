@@ -3,8 +3,8 @@ import { LayoutFunction } from '.';
 export const basic: LayoutFunction = (screenWidth, screenHeight, guideSize) => {
   const sizeMap = {
     small: { w: 80, h: 80 },
-    medium: { w: 160, h: 160 },
-    large: { w: 240, h: 240 }
+    medium: { w: 190, h: 190 },
+    large: { w: 340, h: 340 }
   };
 
   const rect = sizeMap[guideSize];
@@ -19,8 +19,8 @@ export const basic: LayoutFunction = (screenWidth, screenHeight, guideSize) => {
       id: 'center',
       x: centerX - rect.w / 2,
       y: centerY - rect.h / 2,
-      w: { small: 80, medium: 160, large: 240 },
-      h: { small: 80, medium: 160, large: 240 },
+      w: { small: 80, medium: 190, large: 340 },
+      h: { small: 80, medium: 190, large: 340 },
       text: 'CENTER'
     },
 
@@ -29,8 +29,8 @@ export const basic: LayoutFunction = (screenWidth, screenHeight, guideSize) => {
       id: 'north',
       x: centerX - rect.w / 2,
       y: 0,
-      w: { small: 80, medium: 160, large: 240 },
-      h: { small: 80, medium: 160, large: 240 },
+      w: { small: 80, medium: 190, large: 340 },
+      h: { small: 80, medium: 190, large: 340 },
       text: 'NORTH'
     },
 
@@ -39,8 +39,8 @@ export const basic: LayoutFunction = (screenWidth, screenHeight, guideSize) => {
       id: 'south',
       x: centerX - rect.w / 2,
       y: screenHeight - rect.h,
-      w: { small: 80, medium: 160, large: 240 },
-      h: { small: 80, medium: 160, large: 240 },
+      w: { small: 80, medium: 190, large: 340 },
+      h: { small: 80, medium: 190, large: 340 },
       text: 'SOUTH'
     },
 
@@ -49,8 +49,8 @@ export const basic: LayoutFunction = (screenWidth, screenHeight, guideSize) => {
       id: 'west',
       x: 0,
       y: centerY - rect.h / 2,
-      w: { small: 80, medium: 160, large: 240 },
-      h: { small: 80, medium: 160, large: 240 },
+      w: { small: 80, medium: 190, large: 340 },
+      h: { small: 80, medium: 190, large: 340 },
       text: 'WEST'
     },
 
@@ -59,8 +59,8 @@ export const basic: LayoutFunction = (screenWidth, screenHeight, guideSize) => {
       id: 'east',
       x: screenWidth - rect.w,
       y: centerY - rect.h / 2,
-      w: { small: 80, medium: 160, large: 240 },
-      h: { small: 80, medium: 160, large: 240 },
+      w: { small: 80, medium: 190, large: 340 },
+      h: { small: 80, medium: 190, large: 340 },
       text: 'EAST'
     }
   ];

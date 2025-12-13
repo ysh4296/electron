@@ -6,8 +6,8 @@ export const grid: LayoutFunction = (screenWidth, screenHeight, guideSize) => {
 
   const LINE_THICKNESS = {
     small: 8,
-    medium: 16,
-    large: 24
+    medium: 22,
+    large: 44
   };
 
   return [
